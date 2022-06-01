@@ -1,0 +1,50 @@
+authors = [
+    ""
+]
+create_database = false # deletes then creates
+database = "DATABASE"
+description = "DESCRIPTION"
+engine = "ENGINE"
+project = "PROJECT"
+source_dir = "src"
+
+[version_control]
+url = "VERSION_CONTROL_URL"
+
+#
+# ADD DOCUMENTATION HERE...
+#
+
+# `update`, requires Rel file in `file`
+[[queries]]
+# ALL UNCOMMENTED KEYS REQUIRED
+index = 0
+type = "data"
+file = ""
+inputs = [
+    { key = "" },
+]
+
+# `load_csv` or `load_json`, depending on file extension
+[[queries]]
+# ALL UNCOMMENTED KEYS REQUIRED
+index = 1
+type = "data"
+data_path = ""
+relation_name = ""
+# Schema (optional) NOT YET SUPPORTED
+# [queries.schema]
+# a = "int"
+# b = "float"
+
+[[queries]]
+# ALL UNCOMMENTED KEYS REQUIRED
+index = 2
+type = "install"
+file = ""
+
+[[queries]]
+# ALL UNCOMMENTED KEYS REQUIRED
+index = 3
+type = "query"
+file = ""
