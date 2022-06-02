@@ -1,0 +1,52 @@
+authors = [
+    "Jason A. Grafft <jason.grafft@relational.ai>"
+]
+create_database = true # deletes then creates
+data_dir = "data"
+database = "jag-test-2748934675"
+description = "Example RAI project demonstrating use of the Python Run Harness"
+engine = "jag-yesterday"
+project = "rai-python-harness-example"
+source_dir = "src"
+
+[version_control]
+url = "https://github.com/jagrafft/rai-python-harness"
+
+# `update` data insert
+[[queries]]
+index = 0
+type = "data"
+file_name = "penguins_size-insert.rel"
+inputs = [
+    { penguins_size = "penguins_size.csv" },
+]
+
+# `load_csv`
+[[queries]]
+index = 1
+type = "data"
+file_name = "simple-import-4cols.csv"
+relation_name = "simple"
+# NOT YET SUPPORTED BY PYTHON SDK
+# [queries.schema]
+# cocktail = "string"
+# quantity = "int"
+# price = "float"
+# date = "date"
+
+# `load_json`
+[[queries]]
+index = 2
+type = "data"
+file_name = "person.json"
+relation_name = "person"
+
+#[[queries]]
+#index = 3
+#type = "install"
+#file_name = ""
+
+#[[queries]]
+#index = 4
+#type = "query"
+#file_name = ""

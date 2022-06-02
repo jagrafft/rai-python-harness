@@ -1,14 +1,29 @@
+from pathlib import Path
+from sys import argv
+
+# Verify CLI input is valid
+if len(argv) == 2:
+    toml_path = Path(argv[1])
+    if toml_path.suffix != ".toml":
+        print(f"{toml_path}'s extension is '{toml_path.suffix}', must be '.toml'")
+else:
+    print("\nERROR: Script takes a single (1) argument")
+    print("Usage: run_harness.py </path/to/{config}>.toml")
+    exit()
+
+# Load TOML configuration
 from pytomlpp import load as tomload
 
 try:
-    schema = tomload("schema.toml")
+    config = tomload(toml_path)
 except:
     exit(
-        "'schema.toml' contains an error or was not found in root of current directory"
+        "'config.toml' contains an error or was not found in root of current directory"
     )
 
+# Validate TOML configuration
 # try:
-#     validate(schema)
+#     validate(config)
 # except Exception as e:
 #     exit(f"EXCEPTION: {e}")
 
@@ -17,8 +32,7 @@ from functools import reduce
 
 from json import dumps as json_dumps
 from pandas import DataFrame
-from pathlib import Path
-from railib import api, config
+from railib import api, config as rai_config
 from time import localtime, strftime
 
 import logging
@@ -27,43 +41,54 @@ import logging
 current_time_str = strftime("%Y-%m-%dT%H%M%S", localtime())
 
 # "Reset" `output/`
-output_dir = Path(Path.cwd() / "output")
+output_dir = Path(toml_path.parent.resolve() / f"output-{toml_path.stem}")
 
+print(f"output_dir: {output_dir}")
 # Rename 'output/', if it exists
 if output_dir.exists():
-    output_dir.rename(Path.cwd() / f"output-{current_time_str}")
+    output_dir.rename(f"{output_dir}-{current_time_str}")
 
 output_dir.mkdir(parents=False, exist_ok=False)
 
 # Initiate logger
 logging.basicConfig(datefmt="%Y-%m-%dT%H%M%S.%.3f")
-log_file_path = f"output/{current_time_str}-{schema['project']}.log"
+log_file_path = Path(output_dir / f"{current_time_str}-{config['project']}.log")
 log_file_handler = logging.FileHandler(log_file_path)
 log_file_handler.setLevel(logging.DEBUG)
 
-logger = logging.getLogger(log_file_path)
+logger = logging.getLogger(f"{log_file_path}")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(log_file_handler)
 
 # Set RAI variables for connection
-con = api.Context(**config.read())
+con = api.Context(**rai_config.read())
 
 # Create database if requested
-if schema["create_database"]:
+if config["create_database"]:
     try:
-        api.delete_database(con, schema["database"])
+        api.delete_database(con, config["database"])
     except:
         print("No database present.")
 
-    print(f"Creating database '{schema['database']}'")
-    api.create_database(con, schema["database"], schema["engine"], overwrite=True)
+    print(f"Creating database '{config['database']}'")
+    api.create_database(con, config["database"], config["engine"], overwrite=True)
 
 #
 # Functions for running and logging operations on RelationalAI
 #
 def dispatch_operation(cell: dict, ctx: api.Context, database: str, engine: str):
-    if "file" in cell:
-        source_path = f"{schema['source_dir']}{cell['file']}"
+    source = None
+
+    if "file_name" in cell:
+        # Use `Path` to ensure proper construction
+        dir_to_use = (
+            config["data_dir"] if "relation_name" in cell else config["source_dir"]
+        )
+
+        _source_path = Path(toml_path.parent / dir_to_use / cell["file_name"])
+        # Convert `Path` to string for "downstream" use
+        source_path = f"{_source_path}"
+
         try:
             source = read_cell(source_path)
         except Exception as e:
@@ -77,6 +102,7 @@ def dispatch_operation(cell: dict, ctx: api.Context, database: str, engine: str)
             engine,
             source,
             f"{cell['index']}-{source_path.replace('/', '-')}",
+            index=cell["index"],
         )
     elif cell["type"] == "UPDATE":
         run_query_log_result(
@@ -84,9 +110,10 @@ def dispatch_operation(cell: dict, ctx: api.Context, database: str, engine: str)
             database,
             engine,
             source,
-            f"{cell['index']}-{source_path.replace('/', '-')}",
+            Path(output_dir / f"{cell['index']}-{cell['file_name']}"),
             read_only=False,
             return_df=False,
+            index=cell["index"],
         )
     elif cell["type"] == "INSTALL":
         install_model_log_result(
@@ -94,47 +121,56 @@ def dispatch_operation(cell: dict, ctx: api.Context, database: str, engine: str)
             database,
             engine,
             {f"notebooks/{source_path.replace('.rel', '')}": source},
-            f"{cell['index']}-{source_path.replace('/', '-')}",
+            Path(output_dir / f"{cell['index']}-{cell['file_name']}"),
             cell["index"],
         )
     elif cell["type"] == "DATA":
+        project_data_dir = Path(toml_path.parent.resolve() / config["data_dir"])
+        print(f"project_data_dir: {project_data_dir}")
+
         # read data files in `cell["inputs"]`
         if "inputs" in cell and len(cell["inputs"]) > 0:
-            inputs = {k: read_cell(v) for npt in cell["inputs"] for k, v in npt.items()}
+            inputs = {
+                k: read_cell(f"{project_data_dir}/{v}")
+                for npt in cell["inputs"]
+                for k, v in npt.items()
+            }
 
             run_query_log_result(
                 ctx,
                 database,
                 engine,
                 source,
-                f"{cell['index']}-{source_path.replace('/', '-')}",
+                Path(output_dir / f"{cell['index']}-{cell['file_name']}"),
                 read_only=False,
                 inputs=inputs,
                 return_df=False,
+                index=cell["index"],
             )
         else:
             load_file_log_results(
                 ctx,
                 database,
                 engine,
-                schema["data_path"],
+                source,
+                Path(output_dir / f"{cell['index']}-{cell['file_name']}"),
                 cell["relation_name"],
-                # { "schema": cell["schema"] } if "schema" in cell else {} # NOT YET SUPPORTED BY SDK
+                # { "config": cell["config"] } if "config" in cell else {} # NOT YET SUPPORTED BY SDK
+                index=cell["index"],
             )
     else:
         logger.error(f"ERROR: KEY '{cell['type']}' NOT SUPPORTED", exc_info=True)
 
 
 def install_model_log_result(
-    ctx: api.Context, db: str, engine: str, models: dict, file_path: str, index: int
+    ctx: api.Context, db: str, engine: str, models: dict, file_path: Path, index: int
 ):
-    result = None
-
     logger.info(f"INSTALLING {index}-{','.join(models.keys())}")
     try:
         result = api.install_model(ctx, db, engine, models)
     except Exception as e:
         logger.error(f"EXCEPTION: {e}", exc_info=True)
+        logger.error("ERROR: Could not install model")
 
     if result:
         if len(result["problems"]) > 0:
@@ -143,7 +179,7 @@ def install_model_log_result(
             logger.info("SUCCESS")
 
         # strip extension
-        file_path_no_ext = Path(f"output/{file_path}").with_suffix("")
+        file_path_no_ext = file_path.with_suffix("")
 
         write_result(f"{file_path_no_ext}.json", json_dumps(result))
         logger.info(f"JSON output written to '{file_path_no_ext}.json'")
@@ -153,27 +189,39 @@ def install_model_log_result(
 
 # TODO Add `syntax` when available
 def load_file_log_results(
-    ctx: api.Context, db: str, engine: str, data_path: str, rel_name: str
+    ctx: api.Context,
+    db: str,
+    engine: str,
+    data: str,
+    file_path: Path,
+    rel_name: str,
+    syntax: dict = {},
+    index: int = 0,
 ):
-    logger.info(f"LOADING {data_path} to {db}:{rel_name}...", exc_info=True)
-    try:
-        data = read_cell(data_path)
+    logger.info(
+        f"LOADING {index}-{file_path.name} to {db}:{rel_name}...", exc_info=True
+    )
+    if file_path.suffix == ".csv":
+        # TODO Add `syntax` when available
+        result = api.load_csv(ctx, db, engine, rel_name, data)
+    elif file_path.suffix == ".json":
+        result = api.load_json(ctx, db, engine, rel_name, data)
+    else:
+        logger.error(f"File format '{file_path.suffix}' not supported.")
 
-        if f.suffix == ".csv":
-            # TODO Add `syntax` when available
-            result = api.load_csv(ctx, db, engine, rel_name, data)
-        elif f.suffix == ".json":
-            result = api.load_json(ctx, db, engine, rel_name, data)
+    if result:
+        if len(result["problems"]) > 0:
+            logger.info("PROBLEMS", exc_info=True)
         else:
-            raise Exception(f"File format '{f.suffix}' not supported.")
+            logger.info("SUCCESS", exc_info=True)
 
-        if result:
-            if len(result["problems"]) > 0:
-                logger.info("PROBLEMS", exc_info=True)
-            else:
-                logger.info("SUCCESS", exc_info=True)
-    except Exception as e:
-        logger.error(f"EXCEPTION: {e}", exc_info=True)
+        # strip extension
+        file_path_no_ext = file_path.with_suffix("")
+
+        write_result(f"{file_path_no_ext}.json", json_dumps(result))
+        logger.info(f"JSON output written to '{file_path_no_ext}.json'")
+    else:
+        logger.error("ERROR: Could not write results")
 
 
 def read_cell(path: str) -> str:
@@ -188,51 +236,48 @@ def run_query_log_result(
     db: str,
     engine: str,
     qry: str,
-    file_path: str,
+    file_path: Path,
     read_only: bool = True,
     inputs: dict = {},
     return_df: bool = True,
+    index: int = 0,
 ):
     result = None
 
-    logger.info(f"RUNNING {file_path}", exc_info=True)
+    logger.info(f"RUNNING {index}-{file_path.name}", exc_info=True)
     try:
         result = (
             api.query(ctx, db, engine, qry, readonly=read_only, inputs=inputs)
             if inputs
             else api.query(ctx, db, engine, qry, readonly=read_only)
         )
-
-        if result:
-            if len(result["problems"]) > 0:
-                logger.info("PROBLEMS", exc_info=True)
-            else:
-                logger.info("SUCCESS", exc_info=True)
-
-            # strip extension
-            file_path_no_ext = Path(f"output/{file_path}").with_suffix("")
-
-            # write CSV if requested
-            if return_df:
-                to_DF(result, return_df=return_df).to_csv(f"{file_path_no_ext}.csv")
-                logger.info(f"CSV written to '{file_path_no_ext}.csv", exc_info=True)
-
-            # write and log results
-            write_result(f"{file_path_no_ext}.json", json_dumps(result))
-            logger.info(
-                f"JSON output written to '{file_path_no_ext}.json'", exc_info=True
-            )
-        else:
-            raise Exception("Result is empty.")
     except Exception as e:
         logger.error(f"EXCEPTION: {e}", exc_info=True)
+        logger.error("ERROR: Could not fetch result")
+
+    if len(result["problems"]) > 0:
+        logger.info("PROBLEMS", exc_info=True)
+    else:
+        logger.info("SUCCESS", exc_info=True)
+
+    # strip extension
+    file_path_no_ext = file_path.with_suffix("")
+
+    # write CSV if requested
+    if return_df:
+        to_DF(result, return_df=return_df).to_csv(f"{file_path_no_ext}.csv")
+        logger.info(f"CSV written to '{file_path_no_ext}.csv", exc_info=True)
+
+    # write and log results
+    write_result(f"{file_path_no_ext}.json", json_dumps(result))
+    logger.info(f"JSON output written to '{file_path_no_ext}.json'", exc_info=True)
 
 
 # TODO: Complete function
-# def validate(schema: dict):
-#     # validate schema...
+# def validate(config: dict):
+#     # validate config...
 #     if not ok:
-#         return Exception("Schema does not validate.")
+#         return Exception("Config does not validate.")
 
 
 def write_result(file_path: str, contents: str):
@@ -322,6 +367,6 @@ def single_key_relation_to_DF(rel, return_df, columns=None):
 #
 # RUN LOOP
 #
-for query in schema["queries"]:
+for query in config["queries"]:
     query["type"] = query["type"].upper()
-    dispatch_operation(query, con, schema["database"], schema["engine"])
+    dispatch_operation(query, con, config["database"], config["engine"])

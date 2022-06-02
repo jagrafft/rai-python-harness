@@ -2,6 +2,7 @@ authors = [
     ""
 ]
 create_database = false # deletes then creates
+data_dir = "data"
 database = "DATABASE"
 description = "DESCRIPTION"
 engine = "ENGINE"
@@ -30,7 +31,7 @@ inputs = [
 # ALL UNCOMMENTED KEYS REQUIRED
 index = 1
 type = "data"
-data_path = ""
+file_name = ""
 relation_name = ""
 # Schema (optional) NOT YET SUPPORTED
 # [queries.schema]

@@ -1,0 +1,12 @@
+{
+  "first_name": "John",
+  "last_name": "Smith",
+  "address": { "city": "Seattle",
+               "state": "WA" },
+  "phone": [
+    { "type": "home",
+      "number": "206-456" },
+    { "type": "work",
+      "number": "206-123" }
+  ]
+}
