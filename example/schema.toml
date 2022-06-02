@@ -3,9 +3,9 @@ authors = [
 ]
 create_database = true # deletes then creates
 data_dir = "data"
-database = "jag-test-2748934675"
+database = "DATABASE"
 description = "Example RAI project demonstrating use of the Python Run Harness"
-engine = "jag-yesterday"
+engine = "ENGINE"
 project = "rai-python-harness-example"
 source_dir = "src"
 

@@ -21,12 +21,12 @@ See [toml.io][tomlio] for description of format.
 |:--------------------------------|:---------------:|:-----------------------------------------------------------------------------------------------------------|:----------------------------------------------:|
 | `authors`                       | `Array<String>` | Project/script authors and contributors                                                                    | `Y`                                            |
 | `create_database`               | `Boolean`       | Delete then create new database on run                                                                     | `Y`                                            |
-| `data_dir`                      | `String`        | Path to data directory                                                                                     | `DATA queries`                                 |
+| `data_dir`                      | `String`        | Path to data directory, default is `data/`                                                                 | `DATA queries`                                 |
 | `database`                      | `String`        | Name RAI of database to use                                                                                | `Y`                                            |
 | `description`                   | `String`        | Information on project/script for others' reference                                                        | `Y`                                            |
 | `engine`                        | `String`        | Name of RAI engine to use                                                                                  | `Y`                                            |
 | `project`                       | `String`        | Project configuration belongs to                                                                           | `Y`                                            |
-| `source_dir`                    | `String`        | Path to `*.rel` files                                                                                      | `Y`                                            |
+| `source_dir`                    | `String`        | Path to `*.rel` files, default is `src/`                                                                   | `Y`                                            |
 | `version_control`               | `Table`         | `Table` (`Hash`/`Dictionary`) with information on version control                                          | `Y`                                            |
 | `version_control.url`           | `String`        | Path to repository for version control                                                                     | `Y`                                            |
 | `queries`                       | `Array<Table>`  | Array with a `Table` to describe how each operation should be executed                                     | `Y`                                            |
@@ -52,11 +52,6 @@ See [toml.io][tomlio] for description of format.
 | `load_csv`  | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         | `index, type, file_name, queries.schema*, relation_name` |
 | `load_json` | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         | `index, type, file_name, relation_name`                  |
 | `update`    | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, and that the `keys` of the `inputs` `Table` match keys in the Rel file. | `index, type, file_name, inputs`                         |
-
-### Notes
-1. Specify directory with `*.rel` files using the `source_dir` key
-   - Default value is `src/`
-1. Specify data directory using the `data_dir` key
 
 ## Punch List
 - [ ] Cloud path compatibility
