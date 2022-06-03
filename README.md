@@ -15,13 +15,13 @@ Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio]
    1. Results written to `output-{config}/`, directory is preseved by future operations
    
 ## TOML Configuration Files
-See [toml.io][tomlio] for description of format.
+`run_harness.py` provides some validation for Configuration files. See [toml.io][tomlio] for description of format.
 
 | Key                             | Type            | Description                                                                                                | Required?                                      |
 |:--------------------------------|:---------------:|:-----------------------------------------------------------------------------------------------------------|:----------------------------------------------:|
 | `authors`                       | `Array<String>` | Project/script authors and contributors                                                                    | `Y`                                            |
 | `create_database`               | `Boolean`       | Delete then create new database on run                                                                     | `Y`                                            |
-| `data_dir`                      | `String`        | Path to data directory, default is `data/`                                                                 | `DATA queries`                                 |
+| `data_dir`                      | `String`        | Path to data directory, default is `data/`                                                                 | `Y`                                 |
 | `database`                      | `String`        | Name RAI of database to use                                                                                | `Y`                                            |
 | `description`                   | `String`        | Information on project/script for others' reference                                                        | `Y`                                            |
 | `engine`                        | `String`        | Name of RAI engine to use                                                                                  | `Y`                                            |
@@ -58,7 +58,6 @@ See [toml.io][tomlio] for description of format.
   - [ ] Azure (public)
     - [ ] Credentials (private)
   - [ ] S3 (public)
-- [ ] Configuration schema validation
 - [ ] Complete `README`
 - [ ] Runnable `example/`
   - [x] Loads data
@@ -69,10 +68,14 @@ See [toml.io][tomlio] for description of format.
   - [ ] Runs queries
     - [ ] Queries
     - [ ] Tests
+- [ ] Code clean up
+  - [ ] Abstraction
+  - [ ] Modularization
 - [x] Allows specification of configuration file via CLI
   - [x] CLI option with `arg` validation
   - [x] `Path`s "anchor" to location of specified configuration
   - [x] Update `output/` path, and path relocation
+- [x] Configuration schema validation
 
 [raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
 [raisdkpython]: https://github.com/RelationalAI/rai-sdk-python

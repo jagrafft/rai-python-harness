@@ -16,17 +16,17 @@ url = "VERSION_CONTROL_URL"
 # ADD DOCUMENTATION HERE...
 #
 
-# `update`, requires Rel file in `file`
+# `update`, requires Rel file_name in `file`
 [[queries]]
 # ALL UNCOMMENTED KEYS REQUIRED
 index = 0
 type = "data"
-file = ""
+file_name = ""
 inputs = [
     { key = "" },
 ]
 
-# `load_csv` or `load_json`, depending on file extension
+# `load_csv` or `load_json`, depending on file_name extension
 [[queries]]
 # ALL UNCOMMENTED KEYS REQUIRED
 index = 1
@@ -42,10 +42,10 @@ relation_name = ""
 # ALL UNCOMMENTED KEYS REQUIRED
 index = 2
 type = "install"
-file = ""
+file_name = ""
 
 [[queries]]
 # ALL UNCOMMENTED KEYS REQUIRED
 index = 3
 type = "query"
-file = ""
+file_name = ""

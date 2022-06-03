@@ -21,13 +21,68 @@ except:
         "'config.toml' contains an error or was not found in root of current directory"
     )
 
+
+# Validates TOML configuration
+# TODO Relocate
+def validate(schema: dict):
+    required_keys = {
+        "global": [
+            "authors",
+            "create_database",
+            "data_dir",
+            "database",
+            "description",
+            "engine",
+            "project",
+            "source_dir",
+        ],
+        "queries": [
+            "file_name",
+            "index",
+            "type",
+        ],
+    }
+
+    # Check for presence of required keys
+    for key in required_keys["global"]:
+        if key not in schema:
+            exit(f"ERROR: Configuration file must have key '{key}'")
+
+    # Validate 'version_control' Table
+    if "version_control" in schema:
+        if "url" in schema["version_control"]:
+            if len(schema["version_control"]["url"]) == 0:
+                exit("ERROR: Version control URL may not be empty")
+        else:
+            exit("ERROR: 'version_control' must have 'url' key")
+    else:
+        exit("ERROR: Configuration file must have 'version_control' entry (Table)")
+
+    # Ensure configuration file has 'queries' array, and it is full
+    if "queries" in schema:
+        if len(schema["queries"]) == 1 and schema["queries"][0] == {}:
+            exit("ERROR: 'queries' array may not be empty")
+    else:
+        exit("ERROR: Configuration file must have 'queries' array")
+
+    # Ensure indices of 'queries' array are monotonic
+    indices = [qry["index"] for qry in schema["queries"]]
+
+    if len(indices) != len(set(indices)):
+        exit("ERROR: Duplicate keys in configuration file")
+
+    # Ensure entries in 'queries' array have required keys
+    for query in schema["queries"]:
+        for key in required_keys["queries"]:
+            if key not in query:
+                exit(f"ERROR: query {query['index']} must have key '{key}'")
+
+
 # Validate TOML configuration
-# try:
-#     validate(config)
-# except Exception as e:
-#     exit(f"EXCEPTION: {e}")
+validate(config)
 
 
+# Configuration files are valid, continue with execution
 from functools import reduce
 
 from json import dumps as json_dumps
@@ -271,13 +326,6 @@ def run_query_log_result(
     # write and log results
     write_result(f"{file_path_no_ext}.json", json_dumps(result))
     logger.info(f"JSON output written to '{file_path_no_ext}.json'", exc_info=True)
-
-
-# TODO: Complete function
-# def validate(config: dict):
-#     # validate config...
-#     if not ok:
-#         return Exception("Config does not validate.")
 
 
 def write_result(file_path: str, contents: str):
