@@ -27,7 +27,7 @@ function main()
         "--engine", Dict(:help => "engine name (default: config['engine'])", :arg_type => String),
         "--profile", Dict(:help => "RAI Cloud profile (default: default)", :arg_type => String))
     try
-        run_harness(args.config, args.database, args.engine; profile = args.profile)
+        run_queries(args.config, args.database, args.engine; profile = args.profile)
         exit()
     catch e
         println(e)
@@ -40,7 +40,7 @@ function dispatch_query(context, database, engine, query)
     @info "post" query_type=query["type"]
 end
 
-function run_harness(config_file, database, engine; profile)
+function run_queries(config_file, database, engine; profile)
     # Load TOML configuration file
     configuration = load_toml(config_file)
     validate_configuration(configuration, config_file)
