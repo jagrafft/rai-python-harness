@@ -1,5 +1,4 @@
 authors = [
-    ""
 ]
 create_database = false # deletes then creates
 data_dir = "data"

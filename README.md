@@ -1,18 +1,15 @@
-# RelationalAI Standalone Run Harness for `rai-sdk-python`
-Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio] files for configuration and the [RAI Python SDK][raisdkpython] to transact with RelationalAI's KGMS. Execution sequences may be defined entirely within a TOML configuration then executed via `run_harness.py` as described below.
+# RelationalAI Standalone Run Harness for `rai-sdk-julia`
+Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio] files for configuration and the [RAI Julia SDK][raisdkjulia] to transact with RelationalAI's KGMS. Execution sequences may be defined entirely within a TOML configuration then executed via `harness.jl` as described below.
 
 ## Setup and Execution
 1. Edit TOML configuration(s) as needed (see below)
 1. Ensure you have `~/.rai/config` properly configured
-   - See [Create a configuration file](https://github.com/relationalai/rai-sdk-python#create-a-configuration-file) from the Python SDK
-   - You may customize the `config` path by editing `run_harness.py`
-1. If needed, create a virtual environment
-   1. `python3 -m venv rai-python-harness/`
-   1. `source rai-python-harness/bin/activate`
-   1. `cd rai-python-harness/`
-   1. `pip install -r requirements.txt`
-1. Execute with `python3 run_harness.py </path/to/{config}.toml>`
-   1. Results written to `output-{config}/`, directory is preseved by future operations
+   - See [Create a configuration file](https://github.com/relationalai/rai-sdk-julia#create-a-configuration-file) from the Julia SDK
+1. Install `rai-sdk-julia`
+   - `julia harness/install_dependencies.jl`
+   - [Installation instructions](https://github.com/RelationalAI/rai-sdk-julia#installation)
+1. Execute with `julia harness.jl </path/to/{config}.toml>`
+   1. Results written to `</path/to/{config}.toml>/output-{config}/`, directory is preseved by future operations
    
 ## TOML Configuration Files
 `run_harness.py` provides some validation for Configuration files. See [toml.io][tomlio] for description of format.
@@ -60,23 +57,28 @@ Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio]
   - [ ] S3 (public)
 - [ ] Complete `README`
 - [ ] Runnable `example/`
-  - [x] Loads data
-    - [x] `load_csv`
-    - [x] `load_json`
-    - [x] `update`
+  - [ ] Loads data
+    - [ ] `load_csv`
+    - [ ] `load_json`
+    - [ ] `update`
   - [ ] Installs models
   - [ ] Runs queries
     - [ ] Queries
     - [ ] Tests
-- [ ] Code clean up
-  - [ ] Abstraction
-  - [ ] Modularization
-- [x] Allows specification of configuration file via CLI
-  - [x] CLI option with `arg` validation
-  - [x] `Path`s "anchor" to location of specified configuration
-  - [x] Update `output/` path, and path relocation
+- [ ] Logs run operations
+  - [ ] via `Logging`
+  - [ ] Writes return packets to disk
+- [ ] Dispatches operations by `type` (sepcified in `{config}.toml` `queries`)
+- [x] Initiates `output-{config}/` adjacent to `{config}.toml`
+  - [x] Renames existing directory, if necessary
+- [x] Allows specification options via CLI
+  - [x] `arg` validation
+  - [x] `config` file path
+  - [x] `--database` to use (RAI Cloud)
+  - [x] `--engine` to use (RAI Cloud)
+  - [x] `--profile` to use (RAI Cloud)
 - [x] Configuration schema validation
 
-[raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
-[raisdkpython]: https://github.com/RelationalAI/rai-sdk-python
+[raiinputs]: https://docs.relational.ai/rkgms/sdk/julia-sdk#specifying-inputs
+[raisdkjulia]: https://github.com/RelationalAI/rai-sdk-julia
 [tomlio]: https://toml.io/
