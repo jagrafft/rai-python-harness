@@ -2,16 +2,17 @@
 Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio] files for configuration and the [RAI Python SDK][raisdkpython] to transact with RelationalAI's KGMS. Execution sequences may be defined entirely within a TOML configuration then executed via `run_harness.py` as described below.
 
 ## Setup and Execution
+1. Install Python [Poetry](pypoetry)
 1. Edit TOML configuration(s) as needed (see below)
 1. Ensure you have `~/.rai/config` properly configured
    - See [Create a configuration file](https://github.com/relationalai/rai-sdk-python#create-a-configuration-file) from the Python SDK
-   - You may customize the `config` path by editing `run_harness.py`
-1. If needed, create a virtual environment
-   1. `python3 -m venv rai-python-harness/`
-   1. `source rai-python-harness/bin/activate`
-   1. `cd rai-python-harness/`
-   1. `pip install -r requirements.txt`
-1. Execute with `python3 run_harness.py </path/to/{config}.toml>`
+   - You may customize the `config` path, and other parameters, via the run harness' command-line functionality
+1. Enter the directory
+   1. `cd rai-python-harness`
+1. If needed, initialize the Poetry virtual environment
+   1. `poetry install`
+1. Execute (without entering virtual environment) via `poetry run python3 run_harness.py </path/to/{config}.toml>`
+   1. Enter virtual environment with `poetry shell`, then issue `python3 run_harness.py </path/to/{config}.toml>`
    1. Results written to `output-{config}/`, directory is preseved by future operations
    
 ## TOML Configuration Files
@@ -77,6 +78,7 @@ Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio]
   - [x] Update `output/` path, and path relocation
 - [x] Configuration schema validation
 
+[pypoetry]: https://python-poetry.org/
 [raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
 [raisdkpython]: https://github.com/RelationalAI/rai-sdk-python
 [tomlio]: https://toml.io/

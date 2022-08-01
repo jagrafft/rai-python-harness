@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rai-sdk-harness-python"
+version = "0.0.3"
+description = "Deterministic, standalone RAI Cloud run harness for the RAI Python SDK."
+authors = ["Jason A. Grafft <jason.grafft@relational.ai>"]
+license = "ISC"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.4.3"
+pytomlpp = "^1.0.11"
+rai-sdk = "^0.6.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
