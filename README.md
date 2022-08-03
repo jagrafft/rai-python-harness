@@ -1,6 +1,8 @@
 # RelationalAI Standalone Run Harness for `rai-sdk-python`
 Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio] files for configuration and the [RAI Python SDK][raisdkpython] to transact with RelationalAI's KGMS. Execution sequences may be defined entirely within a TOML configuration then executed via `run_harness.py` as described below.
 
+**NOTE:** Currently in active development.
+
 ## Setup and Execution
 1. Install Python [Poetry][pypoetry]
 1. Edit TOML configuration(s) as needed (see below)
