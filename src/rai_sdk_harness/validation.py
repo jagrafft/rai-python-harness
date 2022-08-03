@@ -14,7 +14,7 @@ def load_toml_or_exit(toml_path) -> dict:
         )
 
 
-def valid_file_extension_or_exit(schema_path: Path, ext):
+def valid_file_extension_or_exit(schema_path: Path, ext) -> None:
     """Checks the suffix to determines if `schema_path` matches the expected file extension. Fails when match is `False`."""
     if schema_path.suffix != ext:
         exit(

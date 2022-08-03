@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass  # , field
+from dataclasses import dataclass
 from pathlib import Path
 
 from rai_sdk_harness.utils import formatted_time_now
@@ -14,6 +14,6 @@ class SequenceLogger:
         if not log_output_dir.is_dir():
             exit(f"EXECUTION STOPPED: '{log_output_dir}' is not a directory")
 
-    import logging
+    _run_times = {"post_init": formatted_time_now()}
 
-    _run_times = {"logger init": formatted_time_now()}
+    import logging
