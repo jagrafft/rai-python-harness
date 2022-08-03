@@ -10,7 +10,7 @@ for v in ["w00t", "compute", "version_control", "sjadkfl"]:
     try:
         print(f"val: {s.get(v)}")
         print(f"type(val): {type(s.get(v))}")
-    except ValueError as verr:
-        print(f"ERROR: {verr}")
+    except KeyError as kerr:
+        print(f"ERROR: {kerr}")
 
     print("")

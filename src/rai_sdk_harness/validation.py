@@ -43,7 +43,7 @@ def valid_schema_or_exit(schema_path: Path) -> dict:
             "source_dir",
         ],
         "queries": [
-            "source_path",
+            "rel_path",
             "index",
             "type",
         ],
