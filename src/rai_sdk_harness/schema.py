@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 from rai_sdk_harness.validation import valid_schema_or_exit
@@ -14,6 +14,7 @@ class Schema:
 
     NOTE: Requires 'proper' input, and will fail on then report a violation
     """
+
     toml_path: Path
     schema: dict = field(init=False)
 
