@@ -56,30 +56,6 @@ Deterministic and "standalone" run harness for Rel projects; uses [TOML][tomlio]
 | `load_json` | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         | `index, type, file_name, relation_name`                  |
 | `update`    | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, and that the `keys` of the `inputs` `Table` match keys in the Rel file. | `index, type, file_name, inputs`                         |
 
-## Punch List
-- [ ] Cloud path compatibility
-  - [ ] Azure (public)
-    - [ ] Credentials (private)
-  - [ ] S3 (public)
-- [ ] Complete `README`
-- [ ] Runnable `example/`
-  - [x] Loads data
-    - [x] `load_csv`
-    - [x] `load_json`
-    - [x] `update`
-  - [ ] Installs models
-  - [ ] Runs queries
-    - [ ] Queries
-    - [ ] Tests
-- [ ] Code clean up
-  - [ ] Abstraction
-  - [ ] Modularization
-- [x] Allows specification of configuration file via CLI
-  - [x] CLI option with `arg` validation
-  - [x] `Path`s "anchor" to location of specified configuration
-  - [x] Update `output/` path, and path relocation
-- [x] Configuration schema validation
-
 [pypoetry]: https://python-poetry.org/
 [raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
 [raisdkpython]: https://github.com/RelationalAI/rai-sdk-python
