@@ -1,8 +1,14 @@
 from __future__ import annotations
 
+from pathlib import Path
 from time import localtime, strftime
 
 import logging
+
+
+def cell_has_inputs(cell: dict) -> bool:
+    """Return whether or not 'inputs' key of `cell` is present and populated"""
+    return True if ("inputs" in cell) and cell["inputs"] else False
 
 
 def formatted_time_now() -> str:
@@ -21,3 +27,25 @@ def init_logger(log_path: Path) -> logging.Logger:
     logger.addHandler(log_file_handler)
 
     return logger
+
+
+def open_file(file_path: Path) -> str:
+    """Open file at `file_path` or raise `FileNotFoundError`"""
+    try:
+        f = open(file_path, "r")
+        contents = f.read()
+        f.close()
+        return contents
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File Not Found at '{file_path}'")
+
+
+def query_name(qry: dict) -> str:
+    """Return a (partially) 'sanitized' name for a query"""
+    return (qry["id"] if qry["name"] == "" else qry["name"]).replace(" ", "_")
+
+
+def write_file(file_path: Path, contents: str) -> None:
+    of = open(file_path, "wb")
+    of.write(bytes(contents, "utf-8"))
+    of.close()

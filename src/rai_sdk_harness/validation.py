@@ -43,7 +43,7 @@ def valid_schema_or_exit(schema_path: Path) -> dict:
             "source_dir",
         ],
         "queries": [
-            "rel_path",
+            "file_path",
             "index",
             "type",
         ],
@@ -87,6 +87,19 @@ def valid_schema_or_exit(schema_path: Path) -> dict:
         for key in REQUIRED_KEYS["queries"]:
             if key not in query:
                 exit(f"EXECUTION STOPPED: query {query['index']} must have key '{key}'")
+
+    # Ensure 'data' entries without an 'input' key have the key 'name'
+    data_queries_without_input_key = [
+        qry
+        for qry in schema["queries"]
+        if (qry["type"].upper() == "DATA") and ("inputs" not in qry)
+    ]
+
+    for data_query in data_queries_without_input_key:
+        if "name" not in data_query:
+            exit(
+                f"EXECUTION STOPPED: data query {query['index']} does not have an 'inputs' key so it must have a 'name' key"
+            )
 
     # Validation checks passed
     return schema
