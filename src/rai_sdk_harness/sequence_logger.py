@@ -1,33 +1,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from logging import Logger
 from pathlib import Path
 from typing import ClassVar
 
-from rai_sdk_harness.utils import formatted_time_now
-
-import logging
-
-
-def init_logger(log_path: Path) -> logging.Logger:
-    """Initiate a `logging.Logger` object at `log_path`"""
-    logging.basicConfig(datefmt="%Y-%m-%dT%H%M%S.%.3f")
-
-    log_file_handler = logging.FileHandler(str(log_path))
-    log_file_handler.setLevel(logging.DEBUG)
-
-    logger = logging.getLogger(str(log_path))
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(log_file_handler)
-
-    return logger
+from rai_sdk_harness.utils import formatted_time_now, init_logger
 
 
 @dataclass
 class SequenceLogger:
     log_output_dir: Path
     log_file_path: Path = field(init=False)
-    seq_logger: logging.Logger = field(init=False)
+    seq_logger: Logger = field(init=False)
 
     def __post_init__(self) -> None:
         if not self.log_output_dir.is_dir():

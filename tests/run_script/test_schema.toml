@@ -1,0 +1,77 @@
+description = "Test schema for rai-sdk-harness"
+project = "rai-sdk-harness-test"
+authors = [
+    "Jason A. Grafft <jason.grafft@relational.ai>",
+]
+
+compute = "COMPUTE"
+database = "DATABASE"
+
+create_database = true
+data_dir = "run_script/data/"
+source_dir = "run_script/rel/"
+
+[[queries]]
+id = "cb56f5fb-4622-452d-9e5a-e99f63a5237c"
+name = ""
+type = "data"
+rel_path = "data_import/DATA_LOAD_SCRIPT.rel"
+index = 0
+inputs = [
+    { DATA_FILE = "DATA.csv" },
+]
+
+[[queries]]
+id = "257fa26e-fe21-4ae1-9904-562eab56d0f1"
+inputs = []
+name = ""
+type = "install"
+rel_path = ""
+index = 1
+
+[[queries]]
+id = "bab91fdb-7828-40eb-8bb8-d0ab4b895fe8"
+inputs = []
+name = ""
+type = "update"
+rel_path = ""
+index = 2
+
+[[queries]]
+id = "9fc50037-a841-4408-af12-cd032ace841d"
+inputs = []
+name = ""
+type = "query"
+rel_path = ""
+index = 3
+
+[[queries]]
+id = "16152e88-7211-4518-941d-e05c22f4ed37"
+inputs = []
+name = ""
+type = "query"
+rel_path = ""
+index = 4
+
+[[queries]]
+id = "9377f05a-fb06-48e9-9e69-30c5a878a7a3"
+inputs = []
+name = ""
+type = "query"
+rel_path = ""
+index = 5
+
+[[queries]]
+id = "6ab6d54a-b1fb-4156-8111-7fb6c9052912"
+inputs = []
+name = ""
+type = "query"
+rel_path = ""
+index = 6
+
+[rai_notebook_util]
+version = "0.0.1"
+description = "python run harness for RelationalAI, see README for details."
+
+[version_control]
+url = "https://github.com/RelationalAI/att-dispatch-classification"

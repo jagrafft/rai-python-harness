@@ -3,14 +3,23 @@ from __future__ import annotations
 from pathlib import Path
 from rai_sdk_harness.schema import Schema
 
-s = Schema(Path("../test_schema.toml"))
+keys_to_show = [
+    "description",
+    "authors",
+    "database",
+    "compute",
+    "version_control",
+    "non_extant_key_001",
+    "non_extant_key_2389",
+]
 
-for v in ["w00t", "compute", "version_control", "sjadkfl"]:
-    print(f"testing key: {v}")
+schema = Schema(Path("tests/run_script/test_schema.toml"))
+
+for key in keys_to_show:
     try:
-        print(f"val: {s.get(v)}")
-        print(f"type(val): {type(s.get(v))}")
-    except KeyError as kerr:
-        print(f"ERROR: {kerr}")
+        print(f"{key}: {schema.get(key)}")
+        print(f"type(val): {type(schema.get(key))}")
+    except KeyError as key_err:
+        print(f"ERROR: {key_err}")
 
     print("")
