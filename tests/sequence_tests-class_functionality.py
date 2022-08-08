@@ -20,7 +20,7 @@ keys_to_show = [
 
 context = api.Context(**config.read())
 
-schema = Schema(Path("tests/mock_project/data_load.toml"))
+schema = Schema(Path("tests/project/data_load.toml"))
 sequence_logger = SequenceLogger(Path.cwd())
 seq = Sequence(context, schema, sequence_logger)
 

@@ -13,7 +13,7 @@ keys_to_show = [
     "non_extant_key_2389",
 ]
 
-schema = Schema(Path("tests/run_script/test_schema.toml"))
+schema = Schema(Path("tests/project/test_schema.toml"))
 
 for key in keys_to_show:
     try:
