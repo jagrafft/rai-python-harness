@@ -15,9 +15,9 @@ except:
 from pathlib import Path
 from railib import api, config
 
-from rai_sdk_harness.sequence import Sequence
-from rai_sdk_harness.sequence_logger import SequenceLogger
-from rai_sdk_harness.schema import Schema
+from rai_python_harness.sequence import Sequence
+from rai_python_harness.sequence_logger import SequenceLogger
+from rai_python_harness.schema import Schema
 
 # Example of executing multiple "phases", each defined by it's
 # own TOML file, using the same `SequenceLogger`

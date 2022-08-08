@@ -5,7 +5,7 @@ from logging import Logger
 from pathlib import Path
 from typing import ClassVar
 
-from rai_sdk_harness.utils import formatted_time_now, init_logger
+from rai_python_harness.utils import formatted_time_now, init_logger
 
 
 @dataclass

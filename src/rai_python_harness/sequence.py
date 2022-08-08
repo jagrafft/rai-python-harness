@@ -5,11 +5,11 @@ from pathlib import Path
 from railib import api
 from typing import Any
 
-from rai_sdk_harness.query_utils import data_query, log_result
-from rai_sdk_harness.schema import Schema
-from rai_sdk_harness.sequence_logger import SequenceLogger
+from rai_python_harness.query_utils import data_query, log_result
+from rai_python_harness.schema import Schema
+from rai_python_harness.sequence_logger import SequenceLogger
 
-from rai_sdk_harness.utils import cell_has_inputs, open_file, query_name
+from rai_python_harness.utils import cell_has_inputs, open_file, query_name
 
 
 @dataclass
@@ -27,8 +27,12 @@ class Sequence:
         # Bind variables to CLI args (highest rank) or contents of TOML file (default)
         self.engine = self.schema.get("engine")
         self.database = self.schema.get("database")
-        self.data_dir = Path(self.schema.toml_path.parent / self.schema.get("data_dir")).absolute()
-        self.source_dir = Path(self.schema.toml_path.parent / self.schema.get("source_dir")).absolute()
+        self.data_dir = Path(
+            self.schema.toml_path.parent / self.schema.get("data_dir")
+        ).absolute()
+        self.source_dir = Path(
+            self.schema.toml_path.parent / self.schema.get("source_dir")
+        ).absolute()
 
     @property
     def database(self) -> str:
@@ -123,10 +127,21 @@ class Sequence:
                 )
             elif query_type_uppercase == "DATA":
                 self.sequence_logger.info(f"Loading data...")
-                file_path_suffix =  Path(qry["file_path"]).suffix
-                
+                file_path_suffix = Path(qry["file_path"]).suffix
+
                 result = data_query(
-                    self.context, self.database, self.engine, inputs, source, name, self.sequence_logger, (file_path_suffix if (file_path_suffix in [".csv", ".json"]) else None)
+                    self.context,
+                    self.database,
+                    self.engine,
+                    inputs,
+                    source,
+                    name,
+                    self.sequence_logger,
+                    (
+                        file_path_suffix
+                        if (file_path_suffix in [".csv", ".json"])
+                        else None
+                    ),
                 )
             else:
                 self.sequence_logger.warn(

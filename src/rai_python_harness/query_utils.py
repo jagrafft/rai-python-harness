@@ -5,8 +5,8 @@ from pathlib import Path
 from railib import api
 from typing import Union
 
-from rai_sdk_harness.sequence_logger import SequenceLogger
-from rai_sdk_harness.utils import write_file
+from rai_python_harness.sequence_logger import SequenceLogger
+from rai_python_harness.utils import write_file
 
 
 def data_query(
@@ -17,7 +17,7 @@ def data_query(
     source: str,
     name: str,
     logger: SequenceLogger,
-    file_type: Union[None, str] = None
+    file_type: Union[None, str] = None,
 ):
     result = None
     print(f"file_type: {file_type}")
@@ -45,7 +45,7 @@ def data_query(
                 load_fn = api.load_json
             else:
                 logger.warn(f"File type '{file_type}' not supported, skipping...")
-        
+
         if load_fn:
             result = load_fn(
                 context,

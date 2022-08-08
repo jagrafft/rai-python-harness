@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from rai_sdk_harness.sequence_logger import SequenceLogger
+from rai_python_harness.sequence_logger import SequenceLogger
 from time import sleep
 
 sequence_logger = SequenceLogger(Path.cwd().absolute())

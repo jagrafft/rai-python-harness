@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from railib import api, config
 
-from rai_sdk_harness.sequence import Sequence
-from rai_sdk_harness.sequence_logger import SequenceLogger
-from rai_sdk_harness.schema import Schema
+from rai_python_harness.sequence import Sequence
+from rai_python_harness.sequence_logger import SequenceLogger
+from rai_python_harness.schema import Schema
 from time import sleep
 
 keys_to_show = [

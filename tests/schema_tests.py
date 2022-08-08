@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from rai_sdk_harness.schema import Schema
+from rai_python_harness.schema import Schema
 
 keys_to_show = [
     "description",

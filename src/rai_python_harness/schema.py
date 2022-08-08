@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from rai_sdk_harness.validation import valid_schema_or_exit
+from rai_python_harness.validation import valid_schema_or_exit
 
 
 @dataclass
