@@ -1,5 +1,5 @@
 # RelationalAI Python Run Harness
-Deterministic and "standalone" run harness for Rel projects. Execution sequences are defined by [TOML][tomlio] configuration files then executed using RAI [Python][raisdkpython]'s SDK. Harness provides basic logging and programmatic control over individual runs.
+Deterministic and "standalone" run harness for Rel projects. Execution sequences are defined by [TOML][tomlio] configuration files then executed using RAI's [Python SDK][raisdkpython]. Harness provides basic logging and programmatic control over individual runs.
 
 ## Setup and Execution
 1. Install Python [Poetry][pypoetry]
