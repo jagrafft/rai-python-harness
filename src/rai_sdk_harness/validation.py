@@ -34,7 +34,7 @@ def valid_schema_or_exit(schema_path: Path) -> dict:
     REQUIRED_KEYS = {
         "global": [
             "authors",
-            "compute",
+            "engine",
             "create_database",
             "data_dir",
             "database",

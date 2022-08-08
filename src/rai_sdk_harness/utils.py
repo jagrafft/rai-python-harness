@@ -42,7 +42,11 @@ def open_file(file_path: Path) -> str:
 
 def query_name(qry: dict) -> str:
     """Return a (partially) 'sanitized' name for a query"""
-    return (qry["id"] if qry["name"] == "" else qry["name"]).replace(" ", "_")
+    if "name" in qry:
+        if qry["name"] != "":
+            return qry["name"].replace(" ", "_")
+    
+    return qry["id"]
 
 
 def write_file(file_path: Path, contents: str) -> None:

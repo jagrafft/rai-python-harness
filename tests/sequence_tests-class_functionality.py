@@ -12,7 +12,7 @@ keys_to_show = [
     "description",
     "authors",
     "database",
-    "compute",
+    "engine",
     "version_control",
     "non_extant_key_001",
     "non_extant_key_2389",
@@ -20,14 +20,14 @@ keys_to_show = [
 
 context = api.Context(**config.read())
 
-schema = Schema(Path("tests/run_script/test_schema.toml"))
+schema = Schema(Path("tests/mock_project/data_load.toml"))
 sequence_logger = SequenceLogger(Path.cwd())
 seq = Sequence(context, schema, sequence_logger)
 
 sequence_logger.info(f"log_dir: {seq.log_dir()}")
 sequence_logger.info(f"log_path: {seq.log_path()}")
 
-sequence_logger.info(f"compute: {seq.compute}")
+sequence_logger.info(f"engine: {seq.engine}")
 sequence_logger.info(f"database: {seq.database}")
 sequence_logger.info(f"data_dir: {seq.data_dir}")
 sequence_logger.info(f"source_dir: {seq.source_dir}")
@@ -37,8 +37,8 @@ sleep(1)
 sequence_logger.info("Updating log path...")
 seq.refresh_log_path()
 
-sequence_logger.info("Updating compute...")
-seq.compute = "UPDATED_COMPUTE"
+sequence_logger.info("Updating engine...")
+seq.engine = "UPDATED_engine"
 
 sequence_logger.info("Updating database...")
 seq.database = "UPDATED_DATABASE"
@@ -50,7 +50,7 @@ sequence_logger.info("Updating source_dir...")
 seq.source_dir = Path(Path.home() / "UPDATED_SOURCE_DIR")
 
 sequence_logger.info(f"log_path: {seq.log_path()}")
-sequence_logger.info(f"compute: {seq.compute}")
+sequence_logger.info(f"engine: {seq.engine}")
 sequence_logger.info(f"database: {seq.database}")
 sequence_logger.info(f"data_dir: {seq.data_dir}")
 sequence_logger.info(f"source_dir: {seq.source_dir}")

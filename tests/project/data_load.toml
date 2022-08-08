@@ -1,0 +1,42 @@
+description = "Test schema for rai-sdk-harness"
+project = "rai-sdk-harness-test"
+authors = [
+    "Jason A. Grafft <jason.grafft@relational.ai>",
+]
+
+engine = "ENGINE"
+database = "DATABASE"
+
+create_database = true
+data_dir = "data/"
+source_dir = "rel/"
+
+[[queries]]
+id = "cb56f5fb-4622-452d-9e5a-e99f63a5237c"
+type = "data"
+file_path = "fc_example/fc_load-data.rel"
+index = 1
+inputs = [
+    { fc_salary_data_csv = "fc_salary_data.csv" },
+]
+
+[[queries]]
+id = "257fa26e-fe21-4ae1-9904-562eab56d0f1"
+name = "mock_investments"
+type = "data"
+file_path = "mock_investments.csv"
+index = 2
+
+[[queries]]
+id = "257fa26e-fe21-4ae1-9904-562eab56d0f1"
+name = "address_colors"
+type = "data"
+file_path = "address_colors.json"
+index = 3
+
+[rai_notebook_util]
+version = "0.0.1"
+description = "python run harness for RelationalAI, see README for details."
+
+[version_control]
+url = "https://github.com/jagrafft/"

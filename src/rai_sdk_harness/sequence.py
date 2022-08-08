@@ -18,25 +18,17 @@ class Sequence:
     schema: Schema
     sequence_logger: SequenceLogger
     # Non-initialized variables are bound "in post" to accommodate CLI args
-    _compute: str = field(init=False)
+    _engine: str = field(init=False)
     _database: str = field(init=False)
     _data_dir: Path = field(init=False)
     _source_dir: Path = field(init=False)
 
     def __post_init__(self):
         # Bind variables to CLI args (highest rank) or contents of TOML file (default)
-        self.compute = self.schema.get("compute")
+        self.engine = self.schema.get("engine")
         self.database = self.schema.get("database")
-        self.data_dir = Path(Path.cwd() / self.schema.get("data_dir"))
-        self.source_dir = Path(Path.cwd() / self.schema.get("source_dir"))
-
-    @property
-    def compute(self) -> str:
-        return self._compute
-
-    @compute.setter
-    def compute(self, name: str) -> None:
-        self._compute = name
+        self.data_dir = Path(self.schema.toml_path.parent / self.schema.get("data_dir")).absolute()
+        self.source_dir = Path(self.schema.toml_path.parent / self.schema.get("source_dir")).absolute()
 
     @property
     def database(self) -> str:
@@ -55,6 +47,14 @@ class Sequence:
         self._data_dir = path
 
     @property
+    def engine(self) -> str:
+        return self._engine
+
+    @engine.setter
+    def engine(self, name: str) -> None:
+        self._engine = name
+
+    @property
     def source_dir(self) -> Path:
         return self._source_dir
 
@@ -63,16 +63,19 @@ class Sequence:
         self._source_dir = path
 
     def exec(self) -> None:
-        """Execute each cell in `schema.query` using `schema.get("compute")` in the database `schema.get("database")`."""
+        """Execute each cell in `schema.query` using `schema.get("engine")` in the database `schema.get("database")`."""
 
         # Iterate 'queries' array and dispatch queries entry-by-entry
         for qry in self.schema.get("queries"):
             self.sequence_logger.info(
-                f"{qry['index']}: {query_name} ({qry['type'].upper()})"
+                f"{qry['index']}: {query_name(qry)} ({qry['type'].upper()})"
             )
 
-            # Path for source file
-            source_path = Path(self.source_dir / qry["file_path"])
+            # Assign path for source file
+            if qry["type"] == "data" and ("inputs" not in qry):
+                source_path = Path(self.data_dir / qry["file_path"])
+            else:
+                source_path = Path(self.source_dir / qry["file_path"])
 
             self.sequence_logger.info(f"Attempting to load '{source_path}'")
             try:
@@ -83,7 +86,7 @@ class Sequence:
 
             inputs = None
             if cell_has_inputs(qry):
-                logger.info("Reading inputs from disk...")
+                self.sequence_logger.info("Reading inputs from disk...")
                 inputs = {
                     key: open_file(Path(self.data_dir / input_file))
                     for entry in qry["inputs"]
@@ -100,27 +103,30 @@ class Sequence:
 
             # Dispatch based on query type
             if query_type_uppercase in ["QUERY", "UPDATE"]:
-                self.sequence_logger(f"Running {qry['type']}...")
-                result = api.query(
+                self.sequence_logger.info(f"Running {qry['type']}...")
+                result = api.exec(
                     self.context,
                     self.database,
-                    self.compute,
-                    readonly=(query_type_uppercase == "UPDATE"),
+                    self.engine,
+                    source,
                     inputs=inputs,
+                    readonly=(query_type_uppercase == "UPDATE"),
                 )
             elif query_type_uppercase == "INSTALL":
-                self.sequence_logger("Bundling model(s)...")
+                self.sequence_logger.info("Bundling model(s)...")
                 model = {}
                 model[f"{source_path.name.replace('.rel', '')}"] = source
 
-                self.sequence_logger("Installing model(s)...")
+                self.sequence_logger.info("Installing model(s)...")
                 result = api.install_model(
-                    self.context, self.database, self.compute, model
+                    self.context, self.database, self.engine, model
                 )
             elif query_type_uppercase == "DATA":
-                self.sequence_logger(f"Loading data...")
+                self.sequence_logger.info(f"Loading data...")
+                file_path_suffix =  Path(qry["file_path"]).suffix
+                
                 result = data_query(
-                    self.context, inputs, source, name, self.sequence_logger
+                    self.context, self.database, self.engine, inputs, source, name, self.sequence_logger, (file_path_suffix if (file_path_suffix in [".csv", ".json"]) else None)
                 )
             else:
                 self.sequence_logger.warn(
