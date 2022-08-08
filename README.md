@@ -11,9 +11,8 @@ Deterministic and "standalone" run harness for Rel projects. Execution sequences
    1. `cd rai-python-harness`
 1. If needed, initialize the Poetry virtual environment
    1. `poetry install`
-1. Execute (without entering virtual environment) via `poetry run python3 run_harness.py </path/to/{config}.toml>`
-   1. Enter virtual environment with `poetry shell`, then issue `python3 run_harness.py </path/to/{config}.toml>`
-   1. Results written to `output-{config}/`, directory is preseved by future operations
+1. See `tests/` for usage examples
+   - **Some tests require RAI Cloud credentials**
    
 ## TOML Configuration Files
 `run_harness.py` provides some validation for Configuration files. See [toml.io][tomlio] for description of format.
