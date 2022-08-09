@@ -17,26 +17,26 @@ Deterministic and "standalone" run harness for Rel projects. Execution sequences
 ## TOML Configuration Files
 `run_harness.py` provides some validation for Configuration files. See [toml.io][tomlio] for description of format.
 
-| Key                         | Type            | Description                                                                                                | Required?                                      |
-|:----------------------------|:---------------:|:-----------------------------------------------------------------------------------------------------------|:----------------------------------------------:|
-| `authors`                   | `Array<String>` | Project/script authors and contributors                                                                    | `Y`                                            |
-| `engine`                    | `String`        | Name of RAI engine to use                                                                                  | `Y`                                            |
-| `create_database`           | `Boolean`       | Delete then create new database on run                                                                     | `Y`                                            |
-| `data_dir`                  | `String`        | Path to data directory, default is `data/`                                                                 | `Y`                                            |
-| `database`                  | `String`        | Name RAI of database to use                                                                                | `Y`                                            |
-| `description`               | `String`        | Information on project/script for others' reference                                                        | `Y`                                            |
-| `project`                   | `String`        | Project configuration belongs to                                                                           | `Y`                                            |
-| `source_dir`                | `String`        | Path to `*.rel` files                                                                                      | `Y`                                            |
-| `queries`                   | `Array<Table>`  | Array with a `Table` to describe how each operation should be executed                                     | `Y`                                            |
-| `queries.<Table>.file_path` | `String`        | Path to `*.rel` file from _within_ `source_dir` (e.g. `${source_dir}/data_load.rel => data_load.rel`)      | `ALL queries`                                  |
-| `queries.<Table>.index`     | `Integer`       | Rank of operation, with zero (`0`) being first. Each `index` must be _unique and monotonically increasing_ | `ALL queries`                                  |
-| `queries.<Table>.inputs`    | `Table`         | `Table` of `key-value` pairs for input substitution, see [specifying inputs][raiinputs]                    | `DATA queries` using `update`                  |
-| `queries.<Table>.name`      | `String`        | Name of relation                                                                                           | `DATA queries` using `load_csv` or `load_json` |
-| `queries.<Table>.note`      | `String`        | Intended to concise descriptions                                                                           |                                                |
-| `queries.<Table>.notes`     | `Table`         | `key-value` pair(s) intended for more robust documentation                                                 |                                                |
-| `queries.<Table>.type`      | `String`        | Type of operation, see below                                                                               | `ALL queries`                                  |
-| `version_control`           | `Table`         | `Table` (`Hash`/`Dictionary`) with information on version control                                          | `Y`                                            |
-| `version_control.url`       | `String`        | Path to repository for version control                                                                     | `Y`                                            |
+| Key                         | Type            | Description                                                                                                | Required?                     |
+|:----------------------------|:---------------:|:-----------------------------------------------------------------------------------------------------------|:-----------------------------:|
+| `authors`                   | `Array<String>` | Project/script authors and contributors                                                                    | `Y`                           |
+| `engine`                    | `String`        | Name of RAI engine to use                                                                                  | `Y`                           |
+| `create_database`           | `Boolean`       | Delete then create new database on run                                                                     | `Y`                           |
+| `data_dir`                  | `String`        | Path to data directory, default is `data/`                                                                 | `Y`                           |
+| `database`                  | `String`        | Name RAI of database to use                                                                                | `Y`                           |
+| `description`               | `String`        | Information on project/script for others' reference                                                        | `Y`                           |
+| `project`                   | `String`        | Project configuration belongs to                                                                           | `Y`                           |
+| `source_dir`                | `String`        | Path to `*.rel` files                                                                                      | `Y`                           |
+| `queries`                   | `Array<Table>`  | Array with a `Table` to describe how each operation should be executed                                     | `Y`                           |
+| `queries.<Table>.file_path` | `String`        | Path to `*.rel` file from _within_ `source_dir` (e.g. `${source_dir}/data_load.rel => data_load.rel`)      | `ALL queries`                 |
+| `queries.<Table>.index`     | `Integer`       | Rank of operation, with zero (`0`) being first. Each `index` must be _unique and monotonically increasing_ | `ALL queries`                 |
+| `queries.<Table>.inputs`    | `Table`         | `Table` of `key-value` pairs for input substitution, see [specifying inputs][raiinputs]                    | `DATA queries` using `update` |
+| `queries.<Table>.name`      | `String`        | Name of relation                                                                                           | `ALL queries`                 |
+| `queries.<Table>.note`      | `String`        | Intended to concise descriptions                                                                           |                               |
+| `queries.<Table>.notes`     | `Table`         | `key-value` pair(s) intended for more robust documentation                                                 |                               |
+| `queries.<Table>.type`      | `String`        | Type of operation, see below                                                                               | `ALL queries`                 |
+| `version_control`           | `Table`         | `Table` (`Hash`/`Dictionary`) with information on version control                                          | `Y`                           |
+| `version_control.url`       | `String`        | Path to repository for version control                                                                     | `Y`                           |
 
 ### Operation Types
 | Type      | Description                                                                                                                                        |

@@ -4,6 +4,7 @@ from pathlib import Path
 from time import localtime, strftime
 
 import logging
+import re
 
 
 def cell_has_inputs(cell: dict) -> bool:
@@ -40,13 +41,10 @@ def open_file(file_path: Path) -> str:
         raise FileNotFoundError(f"File Not Found at '{file_path}'")
 
 
-def query_name(qry: dict) -> str:
-    """Return a (partially) 'sanitized' name for a query"""
-    if "name" in qry:
-        if qry["name"] != "":
-            return qry["name"].replace(" ", "_")
-    
-    return qry["id"]
+def sanitize_query_name(qry: dict) -> str:
+    """Return a 'sanitized' name for a query"""
+    reg_x = re.compile("[_\w]+")
+    return "_".join(re.findall(reg_x, qry["name"]))
 
 
 def write_file(file_path: Path, contents: str) -> None:

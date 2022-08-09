@@ -45,6 +45,7 @@ def valid_schema_or_exit(schema_path: Path) -> dict:
         "queries": [
             "file_path",
             "index",
+            "name",
             "type",
         ],
     }

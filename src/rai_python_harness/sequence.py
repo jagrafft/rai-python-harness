@@ -9,7 +9,7 @@ from rai_python_harness.query_utils import data_query, log_result
 from rai_python_harness.schema import Schema
 from rai_python_harness.sequence_logger import SequenceLogger
 
-from rai_python_harness.utils import cell_has_inputs, open_file, query_name
+from rai_python_harness.utils import cell_has_inputs, open_file, sanitize_query_name
 
 
 @dataclass
@@ -71,8 +71,11 @@ class Sequence:
 
         # Iterate 'queries' array and dispatch queries entry-by-entry
         for qry in self.schema.get("queries"):
+            # Generate a 'sanitized' name for query
+            query_name = sanitize_query_name(qry)
+
             self.sequence_logger.info(
-                f"{qry['index']}: {query_name(qry)} ({qry['type'].upper()})"
+                f"{qry['index']}: {query_name} ({qry['type'].upper()})"
             )
 
             # Assign path for source file
@@ -96,9 +99,6 @@ class Sequence:
                     for entry in qry["inputs"]
                     for key, input_file in entry.items()
                 }
-
-            # Generate a (partially) 'sanitized' name for query
-            name = query_name(qry)
 
             # Variable to hold results of query operation
             result = None
@@ -135,7 +135,7 @@ class Sequence:
                     self.engine,
                     inputs,
                     source,
-                    name,
+                    query_name,
                     self.sequence_logger,
                     (
                         file_path_suffix
@@ -148,7 +148,7 @@ class Sequence:
                     f"Query type {qry['type']} not recognized, skipping..."
                 )
 
-            log_result(result, qry["index"], name, self.sequence_logger)
+            log_result(result, qry["index"], query_name, self.sequence_logger)
 
     def log_dir(self) -> Path:
         """Accessor function for `SequenceLogger.log_output_dir`"""

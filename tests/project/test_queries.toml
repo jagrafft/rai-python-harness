@@ -12,35 +12,30 @@ data_dir = "data/"
 source_dir = "rel/"
 
 [[queries]]
-id = "16152e88-7211-4518-941d-e05c22f4ed37"
 name = "FC_player"
 type = "query"
 file_path = "fc_example/fc_query_player.rel"
 index = 1
 
 [[queries]]
-id = "9377f05a-fb06-48e9-9e69-30c5a878a7a3"
 name = "FC_sum-w-max"
 type = "query"
 file_path = "fc_example/fc_query_sum-w-max.rel"
 index = 2
 
 [[queries]]
-id = "6ab6d54a-b1fb-4156-8111-7fb6c9052912"
 name = "FC_empty-relation-example"
 type = "query"
 file_path = "fc_example/fc_query_empty-relation.rel"
 index = 3
 
 [[queries]]
-id = "e06ed66e-6bba-47f8-bfa9-d728655dd1fe"
 name = "MI_mock_investments_by_company"
 type = "query"
 file_path = "mock_investments/mi_query_total_mock_investments_by_company.rel"
 index = 4
 
 [[queries]]
-id = "4df86867-1b18-4521-bbd2-b2d951fa62a9"
 name = "MI_total_mock_investments"
 type = "query"
 file_path = "mock_investments/mi_query_total_mock_investments.rel"

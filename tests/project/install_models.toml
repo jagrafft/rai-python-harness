@@ -12,14 +12,12 @@ data_dir = "data/"
 source_dir = "rel/"
 
 [[queries]]
-id = "bab91fdb-7828-40eb-8bb8-d0ab4b895fe8"
 name = "fc_installed-models"
 type = "install"
 file_path = "fc_example/fc_installed-models.rel"
 index = 1
 
 [[queries]]
-id = "9fc50037-a841-4408-af12-cd032ace841d"
 inputs = []
 name = "mi_installed-models"
 type = "install"

@@ -12,7 +12,7 @@ data_dir = "data/"
 source_dir = "rel/"
 
 [[queries]]
-id = "cb56f5fb-4622-452d-9e5a-e99f63a5237c"
+name = "fc_load_data"
 type = "data"
 file_path = "fc_example/fc_load-data.rel"
 index = 1
@@ -21,14 +21,12 @@ inputs = [
 ]
 
 [[queries]]
-id = "257fa26e-fe21-4ae1-9904-562eab56d0f1"
 name = "mock_investments"
 type = "data"
 file_path = "mock_investments.csv"
 index = 2
 
 [[queries]]
-id = "257fa26e-fe21-4ae1-9904-562eab56d0f1"
 name = "address_colors"
 type = "data"
 file_path = "address_colors.json"
