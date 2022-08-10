@@ -1,0 +1,15 @@
+def player(prop, name, val) =
+    fc_salaries(prop, row, val)
+    and fc_salaries(:name, row, name) from row
+
+def name(x) = player(_, x, _)
+
+def salary = player:salary
+
+def age = player:age
+
+def plays_for = player:plays_for
+
+def nationality = player:nationality
+
+def team(t) = player:plays_for(_, t) // set of teams

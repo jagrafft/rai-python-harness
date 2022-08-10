@@ -1,0 +1,17 @@
+def fc_salary_csv:data = fc_salary_data_csv
+
+def fc_salary_csv:schema = {
+    :name, "string";
+    :salary, "int";
+    :age, "int";
+    :plays_for, "string";
+    :nationality, "string"
+    }
+
+def loaded_csv = load_csv[fc_salary_csv]
+
+// Delete existing relation, if it exists
+def delete[:fc_salaries] = loaded_csv
+
+// Insert data from CSV into EDB
+def insert[:fc_salaries] = loaded_csv

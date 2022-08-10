@@ -1,0 +1,2 @@
+def output = c in {"RM"; "BFC"; "Chelsea"} :
+    sum[p where plays_for(p, c) : salary[p] ] <++ 0

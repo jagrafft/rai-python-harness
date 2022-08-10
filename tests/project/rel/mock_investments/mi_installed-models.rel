@@ -1,0 +1,14 @@
+def total_mock_investments = sum[company_total :
+        mock_investments(:strike_price, i, price) and
+        mock_investments(:shares, i, shares) and
+        company_total = parse_float[price] * parse_int[shares]
+    from i, price, shares
+]
+
+def total_mock_investments_by_company = { (company, company_total) }
+    from company, company_total, i, price, shares where (
+        mock_investments(:company, i, company) and
+        mock_investments(:strike_price, i, price) and
+        mock_investments(:shares, i, shares) and
+        company_total = parse_float[price] * parse_int[shares]
+    )

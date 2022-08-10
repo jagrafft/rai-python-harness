@@ -1,0 +1,4 @@
+def output = { (:sum, sum[salary]);
+               (:average, average[salary]);
+               (:count, count[salary]);
+               (:argmax, argmax[salary]) }

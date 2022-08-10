@@ -226,9 +226,6 @@ tramp
 # elpa packages
 /elpa/
 
-# reftex files
-*.rel
-
 # AUCTeX auto folder
 /auto/
 
