@@ -14,15 +14,14 @@ Deterministic run harness for Rel projects. Execution sequences are defined in [
 1. See `tests/` for usage examples
    - **Some tests require RAI Cloud credentials**
    
-## TOML Configuration Files
-`run_harness.py` provides some validation for Configuration files. See [toml.io][tomlio] for description of format.
+## TOML Execution Sequence Files
+- Harness provides validation for Configuration files
+- See [toml.io][tomlio] for description of format
+- A [TOML Linter][tomlint] will likely save you time debugging
 
 | Key                         | Type           | Description                                                                                                | Required?                     |
 |:----------------------------|:--------------:|:-----------------------------------------------------------------------------------------------------------|:-----------------------------:|
-| `engine`                    | `String`       | Name of RAI engine to use                                                                                  |                               |
 | `data_dir`                  | `String`       | Path to data directory, default is `data/`                                                                 | `Y`                           |
-| `database`                  | `String`       | Name RAI of database to use                                                                                |                               |
-| `description`               | `String`       | Information on project/script for others' reference                                                        |                               |
 | `source_dir`                | `String`       | Path to `*.rel` files                                                                                      | `Y`                           |
 | `queries`                   | `Array<Table>` | Array with a `Table` to describe how each operation should be executed                                     | `Y`                           |
 | `queries.<Table>.file_path` | `String`       | Path to `*.rel` file from _within_ `source_dir` (e.g. `${source_dir}/data_load.rel => data_load.rel`)      | `ALL queries`                 |
@@ -50,4 +49,5 @@ Deterministic run harness for Rel projects. Execution sequences are defined in [
 [raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
 [raisdkjulia]: https://github.com/RelationalAI/rai-sdk-julia
 [raisdkpython]: https://github.com/RelationalAI/rai-sdk-python
+[tomlint]: https://www.toml-lint.com/
 [tomlio]: https://toml.io/
