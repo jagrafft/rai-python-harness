@@ -9,11 +9,9 @@ from rai_python_harness.schema import Schema
 from time import sleep
 
 keys_to_show = [
-    "description",
-    "authors",
-    "database",
-    "engine",
-    "version_control",
+    "data_dir",
+    "source_dir",
+    "queries",
     "non_extant_key_001",
     "non_extant_key_2389",
 ]

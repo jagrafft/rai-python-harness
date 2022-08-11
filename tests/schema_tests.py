@@ -4,16 +4,14 @@ from pathlib import Path
 from rai_python_harness.schema import Schema
 
 keys_to_show = [
-    "description",
-    "authors",
-    "database",
-    "compute",
-    "version_control",
+    "data_dir",
+    "source_dir",
+    "queries",
     "non_extant_key_001",
     "non_extant_key_2389",
 ]
 
-schema = Schema(Path("tests/project/test_schema.toml"))
+schema = Schema(Path("tests/project/test_queries.toml"))
 
 for key in keys_to_show:
     try:

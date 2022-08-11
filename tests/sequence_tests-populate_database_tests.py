@@ -2,15 +2,9 @@ from __future__ import annotations
 
 from os import environ
 
-try:
-    environ["RAI_DB"]
-except:
-    exit("Must set environment variable 'RAI_DB'")
-
-try:
-    environ["RAI_ENGINE"]
-except:
-    exit("Must set environment variable 'RAI_ENGINE'")
+for var in ["RAI_PROFILE", "RAI_DB", "RAI_ENGINE"]:
+    if var not in environ:
+        exit(f"Must set environment variable '{var}'")
 
 from pathlib import Path
 from railib import api, config

@@ -17,16 +17,18 @@ class Sequence:
     context: api.Context
     schema: Schema
     sequence_logger: SequenceLogger
+    database: str = None
+    engine: str = None
     # Non-initialized variables are bound "in post" to accommodate CLI args
-    _engine: str = field(init=False)
-    _database: str = field(init=False)
+    # _engine: str = field(init=False)
+    # _database: str = field(init=False)
     _data_dir: Path = field(init=False)
     _source_dir: Path = field(init=False)
 
     def __post_init__(self):
         # Bind variables to CLI args (highest rank) or contents of TOML file (default)
-        self.engine = self.schema.get("engine")
-        self.database = self.schema.get("database")
+        # self.engine = self.schema.get("engine")
+        # self.database = self.schema.get("database")
         self.data_dir = Path(
             self.schema.toml_path.parent / self.schema.get("data_dir")
         ).absolute()

@@ -1,13 +1,3 @@
-description = "Test schema for rai-sdk-harness"
-project = "rai-sdk-harness-test"
-authors = [
-    "Jason A. Grafft <jason.grafft@relational.ai>",
-]
-
-engine = "ENGINE"
-database = "DATABASE"
-
-create_database = true
 data_dir = "data/"
 source_dir = "rel/"
 
@@ -31,10 +21,3 @@ name = "address_colors"
 type = "data"
 file_path = "address_colors.json"
 index = 3
-
-[rai_notebook_util]
-version = "0.0.1"
-description = "python run harness for RelationalAI, see README for details."
-
-[version_control]
-url = "https://github.com/jagrafft/"
