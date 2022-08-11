@@ -39,11 +39,11 @@ Deterministic run harness for Rel projects. Execution sequences are defined in [
 | `UPDATE`  | Run an `update` query against the specified RAI database using the specified engine. `update` operations _modify data_                             |
 
 #### `DATA` query subtypes
-| Query       | Description                                                                                                                                        | Allowed Keys                                             |
-|:------------|:---------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------|
-| `load_csv`  | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         | `index, type, file_name, queries.schema*, relation_name` |
-| `load_json` | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         | `index, type, file_name, relation_name`                  |
-| `update`    | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, and that the `keys` of the `inputs` `Table` match keys in the Rel file. | `index, type, file_name, inputs`                         |
+| Query       | Description                                                                                                                                        |
+|:------------|:---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `load_csv`  | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         |
+| `load_json` | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, harness will determine file extension and call correct utility.         |
+| `update`    | Ensure `Table` entry in TOML configuration includes ONLY the allowed keys, and that the `keys` of the `inputs` `Table` match keys in the Rel file. |
 
 [pypoetry]: https://python-poetry.org/
 [raiinputs]: https://docs.relational.ai/rkgms/sdk/python-sdk#specifying-inputs
