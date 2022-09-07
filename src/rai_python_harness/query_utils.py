@@ -64,7 +64,7 @@ def log_result(result, index: int, query_name: str, logger: SequenceLogger):
         _ext = "json"
         logger.info("QUERY RETURNED")
     except:
-        _result = result
+        _result = f"{result}"
         _ext = "txt"
         logger.err("ERROR: Response could not be serialized into JSON")
 
