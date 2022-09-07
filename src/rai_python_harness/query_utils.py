@@ -59,9 +59,19 @@ def data_query(
 
 
 def log_result(result, index: int, query_name: str, logger: SequenceLogger):
-    _result = dumps(result)
+    try:
+        _result = dumps(result)
+        _ext = "json"
+        logger.info("QUERY RETURNED")
+    except:
+        _result = result
+        _ext = "txt"
+        logger.err("ERROR: Response could not be serialized into JSON")
 
     if _result:
+        write_file(
+            Path(logger.log_output_dir / f"{index}-{query_name}.{_ext}"), _result
+        )
         # TODO: Update to reflect changes in SDK return packet
         # if len(result["problems"]) > 0:
         #     logger.warn("PROBLEMS")
@@ -70,9 +80,6 @@ def log_result(result, index: int, query_name: str, logger: SequenceLogger):
         #     )
         # else:
         #     logger.info("SUCCESS")
-
-        logger.info("QUERY RETURNED")
-        write_file(Path(logger.log_output_dir / f"{index}-{query_name}.json"), _result)
     else:
         logger.err("ERROR")
         logger.err("`result` is empty")
