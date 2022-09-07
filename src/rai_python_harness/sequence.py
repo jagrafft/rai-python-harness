@@ -119,7 +119,8 @@ class Sequence:
                     self.engine,
                     source,
                     inputs=inputs,
-                    readonly=(query_type_uppercase == "UPDATE"),
+                    # "UPDATE" != "UPDATE" => `False`
+                    readonly=(query_type_uppercase != "UPDATE"),
                 )
             elif query_type_uppercase == "INSTALL":
                 self.sequence_logger.info("Bundling model(s)...")
