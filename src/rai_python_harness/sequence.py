@@ -95,11 +95,14 @@ class Sequence:
 
             inputs = None
             if cell_has_inputs(qry):
-                self.sequence_logger.info("Reading inputs from disk...")
+                self.sequence_logger.info(
+                    "Create 'inputs' dictionary (as necessary)..."
+                )
+
                 inputs = {
-                    key: open_file(Path(self.data_dir / input_file))
+                    key: open_file() if Path(self.data_dir / value).is_file() else value
                     for entry in qry["inputs"]
-                    for key, input_file in entry.items()
+                    for key, value in entry.items()
                 }
 
             # Variable to hold results of query operation

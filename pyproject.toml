@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rai-python-harness"
-version = "0.0.6"
+version = "0.0.7"
 description = "Deterministic, standalone RAI Cloud run harness for the RAI Python SDK."
 authors = ["Jason A. Grafft <jason.grafft@relational.ai>"]
 license = "ISC"
