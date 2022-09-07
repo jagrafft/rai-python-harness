@@ -10,7 +10,7 @@ def load_toml_or_exit(toml_path) -> dict:
         return load(toml_path)
     except:
         exit(
-            f"EXECUTION STOPPED: Error loading '{schema_path}'. TOML file may contain an error (try a linter) or was not found."
+            f"EXECUTION STOPPED: Error loading '{toml_path}'. TOML file may contain an error (try a linter) or was not found."
         )
 
 
