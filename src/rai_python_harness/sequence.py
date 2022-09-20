@@ -99,8 +99,11 @@ class Sequence:
                     "Create 'inputs' dictionary (as necessary)..."
                 )
 
+                cell_data_path = Path(self.data_dir / value)
                 inputs = {
-                    key: open_file() if Path(self.data_dir / value).is_file() else value
+                    key: open_file(cell_data_path)
+                    if cell_data_path.is_file()
+                    else value
                     for entry in qry["inputs"]
                     for key, value in entry.items()
                 }
