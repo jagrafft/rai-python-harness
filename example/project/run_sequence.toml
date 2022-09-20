@@ -1,0 +1,45 @@
+data_dir = "data/"
+source_dir = "rel/"
+
+# uses `query(..., readonly=False)`
+[[queries]]
+index = 1
+name = "logistic regression test data from UCLA"
+type = "data"
+file_path = "load_data/ucla_log_reg_test_data.rel"
+inputs = [
+    { ucla_logit_regression_test_csv = "ucla_logit_regression_test.csv" },
+]
+
+# uses `load_csv`
+[[queries]]
+index = 2
+name = "feature_X"
+type = "data"
+file_path = "X.csv"
+
+# uses `load_json`
+[[queries]]
+index = 3
+name = "feature_y"
+type = "data"
+file_path = "y.json"
+
+# uses `query(...)`
+[[queries]]
+index = 4
+name = "feature_X as floats"
+type = "query"
+file_path = "queries/feature_X_as_floats.rel"
+
+[[queries]]
+index = 5
+name = "feature_y col-pos-val tuples"
+type = "query"
+file_path = "queries/feature_y_col-pos-val_transform.rel"
+
+[[queries]]
+index = 6
+name = "admission data summary"
+type = "query"
+file_path = "queries/admission_data_summary.rel"

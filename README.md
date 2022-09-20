@@ -13,6 +13,9 @@ Deterministic run harness for Rel projects. Provides logging and programmatic co
    1. `poetry install`
 1. See `tests/` for usage examples
    - **Some tests require RAI Cloud credentials**
+
+### `example/`
+The `example/` directory is a "standalone" project, and it is recommended to `cp -r` it _outside_ the `rai-python-harness/` directory.
    
 ## TOML Execution Sequence Files
 - Harness provides validation for Configuration files

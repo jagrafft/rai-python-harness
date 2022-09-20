@@ -1,0 +1,1 @@
+def output(col,pos,val) = feature_y(:[],pos,col,val)

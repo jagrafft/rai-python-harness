@@ -1,0 +1,20 @@
+module ucla_logit_regression_test_data_config
+    def data = ucla_logit_regression_test_csv
+
+    def schema = {
+        (:admit, "int") ; // boolean
+        (:gre, "int") ;
+        (:gpa, "decimal(64,2)") ;
+        (:rank, "int")
+    }
+end
+
+def ucla_logit_regression_test_data = load_csv[ucla_logit_regression_test_data_config]
+
+def insert[:log_reg_test](col,pos,val) =
+    ucla_logit_regression_test_data(col,pos,val)
+
+def insert:log_reg_test[:admit_bool](pos,val) =
+        ucla_logit_regression_test_data(:admit,pos,v) and
+        { (v = 0, boolean_false) ; (v = 1, boolean_true) }(val)
+    from v

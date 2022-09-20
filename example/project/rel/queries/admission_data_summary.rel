@@ -1,0 +1,6 @@
+def output = { (rank, rank_ct, mean_gpa, mean_gre) }
+    from rank,rank_ct,mean_gpa,mean_gre where (
+        rank_ct = count[pos : log_reg_test(:rank,pos,rank)] and
+        mean_gpa = mean[pos,gpa : log_reg_test(:gpa,pos,gpa) and log_reg_test(:rank,pos,rank)] and
+        mean_gre = mean[pos,gre : log_reg_test(:gre,pos,gre) and log_reg_test(:rank,pos,rank)]
+    )
